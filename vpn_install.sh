@@ -1,15 +1,14 @@
 echo -e "                                                       
-__     ______  _   _   ___ _   _ ____ _____  _    _     _     
-\ \   / |  _ \| \ | | |_ _| \ | / ___|_   _|/ \  | |   | |    
- \ \ / /| |_) |  \| |  | ||  \| \___ \ | | / _ \ | |   | |    
-  \ V / |  __/| |\  |  | || |\  |___) || |/ ___ \| |___| |___ 
-   \_/  |_|   |_| \_| |___|_| \_|____/ |_/_/   \_|_____|_____|
-                                                              
+╦  ╦╔═╗╔╗╔  ╦╔╗╔╔═╗╔╦╗╔═╗╦  ╦  
+╚╗╔╝╠═╝║║║  ║║║║╚═╗ ║ ╠═╣║  ║  
+ ╚╝ ╩  ╝╚╝  ╩╝╚╝╚═╝ ╩ ╩ ╩╩═╝╩═╝
 "
+
 echo -e "Добро пожаловать! Данный скрипт поможет вам установить следующие компоненты на ваш сервер:
 1. Wireguard VPN
 2. DNS server bind 9
-3. Shadowsocks
+3. Добавить клиентов на ваш сервер WireGuard
+4. Сгенерировать конфигурационный файл для клиента wireguard
 Также скрипт поможет вам добавить клиентов wireguard, а также сгенерировать конфигурационные файлы для них"
 
 for (( ; ; ))
@@ -19,8 +18,7 @@ echo -e "\\nДля начала работы выберите необходим
 2. Установка dns сервера 
 3. Добавление клиента в wireguard
 4. Генерация конфигурационного файла для пользователя wireguard
-5. Установка shadowsocks
-6. Выход
+5. Выход
 
 
 Выберите пункт: "
@@ -135,18 +133,7 @@ PresharedKey = '$server_prs'
 AllowedIPs = 0.0.0.0/0
 Endpoint = '$IP_AD':64378' > ./Userconf$client_number.conf"  
 echo "Сгенерирован файл Userconf$client_number.conf, скачайте его при помощи утилиты WinSCP" ;;
-5) echo "Установка shadowsocks начата"
-sudo apt install shadowsocks-libev
-echo "Введите IP адрес: "
-read IP_address
-echo "Введите порт для подключения shadowsocks (рекомендуется 443): "
-read port
-echo "введите пароль для подключения на мобильных устройствах: "
-read pass
-sudo sed -i -r 's/\"server\":\[.+],/\"server\":[\"'$IP_address'\"],/g' /etc/shadowsocks-libev/config.json
-sudo sed -i -r 's/\"password\":\".+\",/"password\":\"'$pass'\",/g' /etc/shadowsocks-libev/config.json
-sudo sed -i -r 's/\"server_port\":.+,/\"server_port\":'$port',/g' /etc/shadowsocks-libev/config.json ;;
-6) echo "Выход"
+5) echo "Выход"
 exit ;;
 esac
 done
